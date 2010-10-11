@@ -19,7 +19,9 @@ var UI = {
     collatedSort: function(a, b){
       var ka = UI.entry.collationKey(a);
       var kb = UI.entry.collationKey(b);
-      return (ka < kb) ? 0 : 1;
+      if (ka > kb) return 1;
+      if (ka < kb) return -1;
+      return 0;
     }
   },
 
