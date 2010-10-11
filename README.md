@@ -1,7 +1,8 @@
 ccdash
 ======
 
-A simple dashboard for your build machine. Understands the cctray XML format.
+A simple dashboard for your build machine. Works with CruiseControl, Hudson,
+and anything else that exposes its status using the cctray XML format.
 
 Usage
 -----
