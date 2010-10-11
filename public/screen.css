@@ -1,0 +1,52 @@
+html {
+  background-color: black;
+  color: white;
+  height: 100%;
+  font-family: "Nimbus Sans", "Helvetica", sans-serif;
+}
+body {
+}
+h1 {
+  text-align: center;
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+footer {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  color: #444;
+}
+ul#cc {
+  width: 100%;
+}
+ul#cc li {
+  font-size: 32px;
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  color: white;
+}
+ul#cc li.failure {
+  background-color: #700;
+}
+ul#cc li.success {
+  background-color: #070;
+}
+ul#cc li.failure.building {
+  background-color: #a30;
+}
+ul#cc li.success.building {
+  background-color: #3a0;
+}
+ul#cc li.success.building,
+ul#cc li.failure.building {
+  font-size: 48px;
+}
+ul#cc li.failure.building p {
+  background: transparent url("spinner-failure.gif") no-repeat right center;
+}
+ul#cc li.success.building p {
+  background: transparent url("spinner-success.gif") no-repeat right center;
+}
