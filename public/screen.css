@@ -25,6 +25,7 @@ ul#cc li {
   font-size: 32px;
   padding: 8px 16px;
   margin-bottom: 8px;
+  -moz-border-radius: 10px;
   border-radius: 10px;
   color: white;
 }
