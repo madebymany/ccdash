@@ -6,21 +6,22 @@ var UI = {
   },
 
   entry: {
+    loadTemplate: function(){
+      UI.entry.template = $('#cc').html();
+    },
+
     toHtml: function(entry){
-      var classes = (entry['lastBuildStatus'] + ' ' + entry['activity']).toLowerCase();
-      var jobName = entry['name'].replace(/_/g, ' ');
-      return '<li class="' + classes + '"><p>' + jobName + '</p></li>';
+      entry['name'] = entry['name'].replace(/_/g, ' ');
+      return UI.entry.template.replace(/\{[a-z+]+\}/gi, function(m){
+        return entry[m.replace(/[\{\}]/g, "")];
+      });
     },
 
-    collationKey: function(entry){
-      return entry['name'].toLowerCase();
-    },
-
-    collatedSort: function(a, b){
-      var ka = UI.entry.collationKey(a);
-      var kb = UI.entry.collationKey(b);
-      if (ka > kb) return 1;
-      if (ka < kb) return -1;
+    sort: function(a, b){
+      var ka = a['lastBuildTime'];
+      var kb = b['lastBuildTime'];
+      if (ka < kb) return 1;
+      if (ka > kb) return -1;
       return 0;
     }
   },
@@ -32,7 +33,7 @@ var UI = {
       return;
     }
 
-    var sorted = data.sort(UI.entry.collatedSort);
+    var sorted = data.sort(UI.entry.sort);
     var html = '';
     $.each(sorted, function(i, entry){
       html += UI.entry.toHtml(entry);
@@ -45,7 +46,12 @@ var UI = {
     setTimeout(UI.pollCc, UI.pollInterval);
     UI.setStatus('polling …');
     $.get('/cc.json', UI.receivedCc);
+  },
+
+  start: function(){
+    UI.entry.loadTemplate();
+    UI.pollCc();
   }
 }
 
-$(document).ready(UI.pollCc);
+$(document).ready(UI.start);

@@ -30,26 +30,26 @@ ul#cc li {
   border-radius: 10px;
   color: white;
 }
-ul#cc li.failure {
+ul#cc li.Failure {
   background-color: #700;
 }
-ul#cc li.success {
+ul#cc li.Success {
   background-color: #070;
 }
-ul#cc li.failure.building {
+ul#cc li.Failure.Building {
   background-color: #a30;
 }
-ul#cc li.success.building {
+ul#cc li.Success.Building {
   background-color: #3a0;
 }
-ul#cc li.success.building,
-ul#cc li.failure.building {
+ul#cc li.Success.Building,
+ul#cc li.Failure.Building {
   border: 4px solid white;
   font-size: 64px;
 }
-ul#cc li.failure.building p {
+ul#cc li.Failure.Building p {
   background: transparent url("spinner-failure.gif") no-repeat right center;
 }
-ul#cc li.success.building p {
+ul#cc li.Success.Building p {
   background: transparent url("spinner-success.gif") no-repeat right center;
 }
