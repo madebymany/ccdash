@@ -26,7 +26,6 @@ var UI = {
   },
 
   receivedCc: function(data, textStatus){
-    setTimeout(UI.pollCc, UI.pollInterval);
     UI.setStatus(textStatus);
 
     if (textStatus != 'success'){
@@ -43,6 +42,7 @@ var UI = {
   },
 
   pollCc: function(){
+    setTimeout(UI.pollCc, UI.pollInterval);
     UI.setStatus('polling …');
     $.get('/cc.json', UI.receivedCc);
   }
