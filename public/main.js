@@ -39,7 +39,9 @@ var UI = {
       html += UI.entry.toHtml(entry);
     });
 
-    $('#cc').html(html);
+    if ($('#cc').html() != html) {
+      $('#cc').html(html);
+    }
   },
 
   pollCc: function(){
