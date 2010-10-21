@@ -6,6 +6,7 @@
     <link media="screen" rel="stylesheet" type="text/css" href="/reset-min.css?1" /> 
     <link media="screen" rel="stylesheet" type="text/css" href="/screen.css?1" /> 
     <script src="jquery.js"></script>
+    <script src="mustache.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
@@ -13,8 +14,8 @@
       <h1>Projects</h1>
     </header>
     <ul id="cc">
-      <li class="{lastBuildStatus} {activity}">
-        <p>{name}</p>
+      <li class="{{lastBuildStatus}} {{activity}}">
+        <p>{{name}}</p>
       </li>
     </ul>
     <footer>

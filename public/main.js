@@ -12,9 +12,7 @@ var UI = {
 
     toHtml: function(entry){
       entry['name'] = entry['name'].replace(/_/g, ' ');
-      return UI.entry.template.replace(/\{[a-z+]+\}/gi, function(m){
-        return entry[m.replace(/[\{\}]/g, "")];
-      });
+      return Mustache.to_html(UI.entry.template, entry);
     },
 
     sort: function(a, b){
