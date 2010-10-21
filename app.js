@@ -9,7 +9,7 @@ var http    = require('http'),
     express = require('express');
 
 var ccUrl = url.parse(process.argv[2]),
-    port  = parseInt(process.argv[3] || 4444),
+    port  = parseInt(process.argv[3] || 4444, 10),
     app   = express.createServer();
 
 app.get('/cc.json', function(req, res){

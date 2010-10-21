@@ -7,19 +7,20 @@ var UI = {
 
   entry: {
     loadTemplate: function(){
-      UI.entry.template = $('#cc').html();
+      UI.entry.container = $('#cc');
+      UI.entry.template  = UI.entry.container.html();
     },
 
     toHtml: function(entry){
-      entry['name'] = entry['name'].replace(/_/g, ' ');
+      entry.name = entry.name.replace(/_/g, ' ');
       return Mustache.to_html(UI.entry.template, entry);
     },
 
     sort: function(a, b){
-      var ka = a['lastBuildTime'];
-      var kb = b['lastBuildTime'];
-      if (ka < kb) return 1;
-      if (ka > kb) return -1;
+      var ka = a.lastBuildTime;
+      var kb = b.lastBuildTime;
+      if (ka < kb) { return  1; }
+      if (ka > kb) { return -1; }
       return 0;
     }
   },
@@ -27,7 +28,7 @@ var UI = {
   receivedCc: function(data, textStatus){
     UI.setStatus(textStatus);
 
-    if (textStatus != 'success'){
+    if (textStatus != 'success') {
       return;
     }
 
@@ -37,8 +38,8 @@ var UI = {
       html += UI.entry.toHtml(entry);
     });
 
-    if ($('#cc').html() != html) {
-      $('#cc').html(html);
+    if (UI.entry.container.html() != html) {
+      UI.entry.container.html(html);
     }
   },
 
@@ -52,6 +53,6 @@ var UI = {
     UI.entry.loadTemplate();
     UI.pollCc();
   }
-}
+};
 
 $(document).ready(UI.start);
