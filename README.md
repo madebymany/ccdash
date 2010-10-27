@@ -26,3 +26,5 @@ Browsers
 It should look as intended in newer versions of Chromium and Firefox. It may
 work in other browsers. Internet Explorer 6 will probably look awful  - if it
 works at all.
+
+Look at the `mxm` branch for a bolder design that we're using in-house.
