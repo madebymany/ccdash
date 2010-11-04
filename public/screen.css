@@ -30,8 +30,8 @@ h1 {
 .Success {
   background-color: #070;
 }
-.Failure p:before {
-  content: "☠";
+.Failure p::before {
+  content: url(skull.png);
   padding-right: 0.15em;
 }
 @-webkit-keyframes green-throb {
