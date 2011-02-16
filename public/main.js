@@ -52,7 +52,6 @@ var UI = {
     });
 
     UI.socket.on('message', function(m){
-        console.log(m);
       UI.receivedCc($.parseJSON(m));
     });
 
