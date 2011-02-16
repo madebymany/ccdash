@@ -1,6 +1,4 @@
 var UI = {
-  pollInterval: 5000, // ms
-
   setStatus: function(text){
     $('#lastStatus').text(text);
   },
@@ -25,13 +23,7 @@ var UI = {
     }
   },
 
-  receivedCc: function(data, textStatus){
-    UI.setStatus(textStatus);
-
-    if (textStatus != 'success') {
-      return;
-    }
-
+  receivedCc: function(data){
     var sorted = data.sort(UI.entry.sort);
     var html = '';
     $.each(sorted, function(i, entry){
@@ -43,15 +35,36 @@ var UI = {
     }
   },
 
-  pollCc: function(){
-    setTimeout(UI.pollCc, UI.pollInterval);
-    UI.setStatus('polling …');
-    $.get('/cc.json', UI.receivedCc);
+  connectToSocket: function(){
+    UI.setStatus('Connecting …');
+
+    UI.socket = new io.Socket();
+    UI.socket.connect();
+
+    setTimeout(function(){
+      if (!UI.socket.connected) {
+        UI.connectToSocket();
+      }
+    }, 5000);
+
+    UI.socket.on('connect', function(){
+      UI.setStatus('Connected');
+    });
+
+    UI.socket.on('message', function(m){
+        console.log(m);
+      UI.receivedCc($.parseJSON(m));
+    });
+
+    UI.socket.on('disconnect', function(){
+      UI.setStatus('Disconnected');
+      setTimeout(UI.connectToSocket, 5000);
+    });
   },
 
   start: function(){
     UI.entry.loadTemplate();
-    UI.pollCc();
+    UI.connectToSocket();
   }
 };
 
