@@ -1,4 +1,6 @@
 var UI = {
+  pollInterval: 3000, // ms
+
   setStatus: function(text){
     $('#status span').text(text);
   },
@@ -27,7 +29,11 @@ var UI = {
     }
   },
 
-  receivedCc: function(data){
+  receivedCc: function(data, textStatus){
+    UI.setStatus(textStatus);
+    if (textStatus != 'success') { return; }
+    UI.setUpdated();
+
     var sorted = data.sort(UI.entry.sort);
     var html = '';
     $.each(sorted, function(i, entry){
@@ -40,37 +46,11 @@ var UI = {
     }
   },
 
-  connectToSocket: function(){
-    UI.setStatus('Connecting …');
-
-    UI.socket = new io.Socket();
-    UI.socket.connect();
-
-    setTimeout(function(){
-      if (!UI.socket.connected) {
-        UI.connectToSocket();
-      }
-    }, 5000);
-
-    UI.socket.on('connect', function(){
-      UI.setStatus('Connected');
-    });
-
-    UI.socket.on('message', function(m){
-      UI.setUpdated();
-      UI.receivedCc($.parseJSON(m));
-    });
-
-    UI.socket.on('disconnect', function(){
-      UI.setStatus('Disconnected');
-      setTimeout(UI.connectToSocket, 5000);
-    });
-  },
-
   shrinkToFit: function(){
     var fontSize = parseInt($('html').css('font-size'), 10);
-    if (fontSize < 20) { return; }
     var elem = $('#cc li:last-child');
+    if (fontSize < 20 || elem.length < 1) { return; }
+
     var maxHeight = $('html').outerHeight();
     var delta = maxHeight - (elem.offset().top + elem.outerHeight());
     if (delta < 0) {
@@ -80,9 +60,15 @@ var UI = {
     }
   },
 
+  pollCc: function(){
+    setTimeout(UI.pollCc, UI.pollInterval);
+    UI.setStatus('polling …');
+    $.get('/cc.json', UI.receivedCc);
+  },
+
   start: function(){
     UI.entry.loadTemplate();
-    UI.connectToSocket();
+    UI.pollCc();
   }
 };
 

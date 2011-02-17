@@ -6,30 +6,22 @@ var http    = require('http'),
     sys     = require('sys'),
     url     = require('url'),
     sax     = require('sax'),
-    async   = require('async'),
-    io      = require('socket.io'),
     express = require('express');
 
 var ccUrl = url.parse(process.argv[2] || "http://localhost:4444/sample.xml"),
-    port  = parseInt(process.argv[3] || 4444, 10);
+    port  = parseInt(process.argv[3] || 4444, 10),
+    pollInterval = 3000,
+    projects = [],
+    server = express.createServer();
 
-var server, socket, clients = [], lastMessage;
+server.get('/cc.json', function(req, res){
+  res.header('Content-Type', 'application/json');
+  res.send(JSON.stringify(projects));
+});
 
-server = express.createServer();
 server.use(express.staticProvider(__dirname + '/public'));
 server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 server.listen(port);
-socket = io.listen(server);
-
-socket.on('connection', function(client){
-  clients.push(client);
-  if (lastMessage) {
-    client.send(lastMessage);
-  }
-  client.on('disconnect', function(){
-    clients.splice(clients.indexOf(client));
-  });
-});
 
 var poll = function(){
   var httpClient = http.createClient(ccUrl.port, ccUrl.hostname),
@@ -44,7 +36,7 @@ var poll = function(){
   };
 
   httpClient.addListener('error', function(ex){
-    setTimeout(poll, 3000);
+    setTimeout(poll, pollInterval);
   });
 
   req.on('response', function(res){
@@ -54,19 +46,12 @@ var poll = function(){
 
     res.on('end', function(){
       parser.close();
-      setTimeout(poll, 3000);
-      var message = JSON.stringify(data);
-
-      if (lastMessage === message) { return; }
-
-      lastMessage = message;
-      async.forEach(clients, function(c){
-        c.send(message);
-      }, function(){});
+      setTimeout(poll, pollInterval);
+      projects = data;
     });
   });
 
   req.end();
 };
 
-setTimeout(poll, 3000);
+poll();

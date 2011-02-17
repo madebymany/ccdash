@@ -17,12 +17,10 @@ Prerequisites
 * [node.js](http://nodejs.org/)
 * [express](http://expressjs.com/)
 * [sax](http://github.com/isaacs/sax-js)
-* [async](http://github.com/caolan/async)
-* [socket.io](http://socket.io/)
 
 You might find [npm](http://npmjs.org/) helpful:
 
-    npm install express sax async socket.io
+    npm install express sax
 
 Browsers
 --------
