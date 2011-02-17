@@ -22,6 +22,7 @@ li {
   font-weight: bold;
   padding: 0.1em 0.2em;
   margin: 0 0.2em 0.2em 0;
+  -moz-border-radius: 0.15em;
   border-radius: 0.15em;
   float: left;
   border: 0.05em solid transparent;
@@ -31,6 +32,7 @@ li {
 }
 .Failure {
   background: #900 url(skull.png) no-repeat;
+  -moz-background-size: contain;
   background-size: contain;
   padding-left: 1.4em;
 }
@@ -43,9 +45,9 @@ li {
 .Building {
   border-color: white;
 }
-.Building.Failure {
-  -webkit-animation: orange-throb 2s infinite;
-}
 .Building.Success {
   -webkit-animation: green-throb 2s infinite;
+}
+.Building.Failure {
+  -webkit-animation: orange-throb 2s infinite;
 }
