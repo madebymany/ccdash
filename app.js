@@ -8,7 +8,7 @@ var http    = require('http'),
     sax     = require('sax'),
     express = require('express');
 
-var ccUrl = url.parse(process.argv[2] || "http://localhost:4444/sample.xml"),
+var ccUrl = url.parse(process.argv[2] || 'http://localhost:4444/sample.xml'),
     port  = parseInt(process.argv[3] || 4444, 10),
     pollInterval = 3000,
     projects = [],
