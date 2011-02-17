@@ -24,8 +24,4 @@ You might find [npm](http://npmjs.org/) helpful.
 Browsers
 --------
 
-It should look as intended in newer versions of Chromium and Firefox. It may
-work in other browsers. Internet Explorer 6 will probably look awful  - if it
-works at all.
-
-Look at the `mxm` branch for a bolder design that we're using in-house.
+The CSS in this branch requires a newish version of WebKit and a big screen.

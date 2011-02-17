@@ -2,54 +2,52 @@ html {
   background-color: black;
   color: white;
   height: 100%;
-  font-family: "Nimbus Sans", "Helvetica", sans-serif;
+  font-family: "Liberation Sans", "Nimbus Sans", "Helvetica", sans-serif;
+  font-size: 140px;
+  overflow: hidden;
 }
-body {
-}
-h1 {
-  text-align: center;
-  font-size: 48px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-footer {
+footer p {
   bottom: 0;
-  right: 0;
   position: absolute;
   color: #444;
+  font-size: 12px;
 }
-ul#cc {
-  width: 100%;
+#lastUpdate {
+  left: 0;
 }
-ul#cc li {
-  font-size: 32px;
+#status {
+  right: 0;
+}
+li {
   font-weight: bold;
-  padding: 8px 16px;
-  margin-bottom: 8px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
-  color: white;
+  padding: 0.1em 0.2em;
+  margin: 0 0.2em 0.2em 0;
+  -moz-border-radius: 0.15em;
+  border-radius: 0.15em;
+  float: left;
+  border: 0.05em solid transparent;
 }
-ul#cc li.Failure {
-  background-color: #700;
-}
-ul#cc li.Success {
+.Success {
   background-color: #070;
 }
-ul#cc li.Failure.Building {
-  background-color: #a30;
+.Failure {
+  background: #900 url(skull.png) no-repeat;
+  -moz-background-size: contain;
+  background-size: contain;
+  padding-left: 1.4em;
 }
-ul#cc li.Success.Building {
-  background-color: #3a0;
+@-webkit-keyframes green-throb {
+  50% { background-color: #0d0; }
 }
-ul#cc li.Success.Building,
-ul#cc li.Failure.Building {
-  border: 4px solid white;
-  font-size: 64px;
+@-webkit-keyframes orange-throb {
+  50% { background-color: #d70; }
 }
-ul#cc li.Failure.Building p {
-  background: transparent url("spinner-failure.gif") no-repeat right center;
+.Building {
+  border-color: white;
 }
-ul#cc li.Success.Building p {
-  background: transparent url("spinner-success.gif") no-repeat right center;
+.Building.Success {
+  -webkit-animation: green-throb 2s infinite;
+}
+.Building.Failure {
+  -webkit-animation: orange-throb 2s infinite;
 }

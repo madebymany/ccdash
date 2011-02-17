@@ -1,8 +1,10 @@
 var UI = {
-  pollInterval: 5000, // ms
-
   setStatus: function(text){
-    $('#lastStatus').text(text);
+    $('#status span').text(text);
+  },
+
+  setUpdated: function(){
+    $('#updated span').text('' + new Date());
   },
 
   entry: {
@@ -25,13 +27,7 @@ var UI = {
     }
   },
 
-  receivedCc: function(data, textStatus){
-    UI.setStatus(textStatus);
-
-    if (textStatus != 'success') {
-      return;
-    }
-
+  receivedCc: function(data){
     var sorted = data.sort(UI.entry.sort);
     var html = '';
     $.each(sorted, function(i, entry){
@@ -40,18 +36,53 @@ var UI = {
 
     if (UI.entry.container.html() != html) {
       UI.entry.container.html(html);
+      setTimeout(UI.shrinkToFit, 1);
     }
   },
 
-  pollCc: function(){
-    setTimeout(UI.pollCc, UI.pollInterval);
-    UI.setStatus('polling …');
-    $.get('/cc.json', UI.receivedCc);
+  connectToSocket: function(){
+    UI.setStatus('Connecting …');
+
+    UI.socket = new io.Socket();
+    UI.socket.connect();
+
+    setTimeout(function(){
+      if (!UI.socket.connected) {
+        UI.connectToSocket();
+      }
+    }, 5000);
+
+    UI.socket.on('connect', function(){
+      UI.setStatus('Connected');
+    });
+
+    UI.socket.on('message', function(m){
+      UI.setUpdated();
+      UI.receivedCc($.parseJSON(m));
+    });
+
+    UI.socket.on('disconnect', function(){
+      UI.setStatus('Disconnected');
+      setTimeout(UI.connectToSocket, 5000);
+    });
+  },
+
+  shrinkToFit: function(){
+    var fontSize = parseInt($('html').css('font-size'), 10);
+    if (fontSize < 20) { return; }
+    var elem = $('#cc li:last-child');
+    var maxHeight = $('html').outerHeight();
+    var delta = maxHeight - (elem.offset().top + elem.outerHeight());
+    if (delta < 0) {
+      var a = (delta < -200) ? 10 : 1;
+      $('html').css('font-size', (fontSize - a) + 'px');
+      setTimeout(UI.shrinkToFit, 1);
+    }
   },
 
   start: function(){
     UI.entry.loadTemplate();
-    UI.pollCc();
+    UI.connectToSocket();
   }
 };
 
