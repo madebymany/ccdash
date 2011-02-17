@@ -73,7 +73,6 @@ var UI = {
     var elem = $('#cc li:last-child');
     var maxHeight = $('html').outerHeight();
     var delta = maxHeight - (elem.offset().top + elem.outerHeight());
-    console.log(delta);
     if (delta < 0) {
       var a = (delta < -200) ? 10 : 1;
       $('html').css('font-size', (fontSize - a) + 'px');
