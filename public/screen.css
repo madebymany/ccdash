@@ -3,7 +3,7 @@ html {
   color: white;
   height: 100%;
   font-family: "Liberation Sans", "Nimbus Sans", "Helvetica", sans-serif;
-  font-size: 110px;
+  font-size: 140px;
   overflow: hidden;
 }
 footer p {
@@ -26,15 +26,13 @@ li {
   float: left;
   border: 0.05em solid transparent;
 }
-.Failure {
-  background-color: #900;
-}
 .Success {
   background-color: #070;
 }
-.Failure p::before {
-  content: url(skull.png);
-  padding-right: 0.15em;
+.Failure {
+  background: #900 url(skull.png) no-repeat;
+  background-size: contain;
+  padding-left: 1.4em;
 }
 @-webkit-keyframes green-throb {
   50% { background-color: #0d0; }

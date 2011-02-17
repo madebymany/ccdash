@@ -36,6 +36,7 @@ var UI = {
 
     if (UI.entry.container.html() != html) {
       UI.entry.container.html(html);
+      setTimeout(UI.shrinkToFit, 1);
     }
   },
 
@@ -64,6 +65,20 @@ var UI = {
       UI.setStatus('Disconnected');
       setTimeout(UI.connectToSocket, 5000);
     });
+  },
+
+  shrinkToFit: function(){
+    var fontSize = parseInt($('html').css('font-size'), 10);
+    if (fontSize < 20) { return; }
+    var elem = $('#cc li:last-child');
+    var maxHeight = $('html').outerHeight();
+    var delta = maxHeight - (elem.offset().top + elem.outerHeight());
+    console.log(delta);
+    if (delta < 0) {
+      var a = (delta < -200) ? 10 : 1;
+      $('html').css('font-size', (fontSize - a) + 'px');
+      setTimeout(UI.shrinkToFit, 1);
+    }
   },
 
   start: function(){
