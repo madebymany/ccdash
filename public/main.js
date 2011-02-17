@@ -1,6 +1,10 @@
 var UI = {
   setStatus: function(text){
-    $('#lastStatus').text(text);
+    $('#status span').text(text);
+  },
+
+  setUpdated: function(){
+    $('#updated span').text('' + new Date());
   },
 
   entry: {
@@ -52,6 +56,7 @@ var UI = {
     });
 
     UI.socket.on('message', function(m){
+      UI.setUpdated();
       UI.receivedCc($.parseJSON(m));
     });
 

@@ -6,14 +6,19 @@ html {
   font-size: 110px;
   overflow: hidden;
 }
-footer {
+footer p {
   bottom: 0;
-  right: 0;
   position: absolute;
   color: #444;
   font-size: 12px;
 }
-h1, li {
+#lastUpdate {
+  left: 0;
+}
+#status {
+  right: 0;
+}
+li {
   font-weight: bold;
   padding: 0.1em 0.2em;
   margin: 0 0.2em 0.2em 0;
