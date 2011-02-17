@@ -4,8 +4,8 @@
 
 var http    = require('http'),
     sys     = require('sys'),
-    sax     = require('sax'),
     url     = require('url'),
+    sax     = require('sax'),
     async   = require('async'),
     io      = require('socket.io'),
     express = require('express');
