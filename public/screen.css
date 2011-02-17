@@ -21,9 +21,6 @@ h1, li {
   float: left;
   border: 0.05em solid transparent;
 }
-h1 {
-  border-color: white;
-}
 .Failure {
   background-color: #900;
 }

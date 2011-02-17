@@ -1,19 +1,16 @@
 <!doctype html>
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta charset="UTF-8">
     <title>Projects</title>
-    <link media="screen" rel="stylesheet" type="text/css" href="/reset-min.css?1" /> 
-    <link media="screen" rel="stylesheet" type="text/css" href="/screen.css?1" /> 
+    <link media="screen" rel="stylesheet" type="text/css" href="/reset.css" />
+    <link media="screen" rel="stylesheet" type="text/css" href="/screen.css" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
     <script src="//cdn.socket.io/stable/socket.io.js"></script>
     <script src="//github.com/janl/mustache.js/raw/0.3.0/mustache.js"></script>
     <script src="/main.js"></script>
   </head>
   <body>
-    <header>
-      <h1>Projects</h1>
-    </header>
     <ul id="cc">
       <li class="{{lastBuildStatus}} {{activity}}">
         <p>{{name}}</p>
