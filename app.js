@@ -19,7 +19,7 @@ server.get('/cc.json', function(req, res){
   res.send(JSON.stringify(projects));
 });
 
-server.use(express.staticProvider(__dirname + '/public'));
+server.use(express['static'](__dirname + '/public'));
 server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 server.listen(port);
 
