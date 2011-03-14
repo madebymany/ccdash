@@ -12,9 +12,13 @@
   </head>
   <body>
     <ul id="cc">
-      <li class="{{lastBuildStatus}} {{activity}}">
-        <p>{{name}}</p>
-      </li>
+      <script id="projects_template" type="text/html">
+        {{#projects}}
+          <li class="{{lastBuildStatus}} {{activity}}">
+            <p>{{name}}</p>
+          </li>
+        {{/projects}}
+      </script>
     </ul>
     <footer>
       <p id="updated">Last updated: <span>Never</span></p>

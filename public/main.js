@@ -1,52 +1,54 @@
-var UI = {
-  pollInterval: 3000, // ms
+(function(){
 
-  setStatus: function(text){
+var Template = function(name){
+  var script = $('#' + name);
+  this.template = script.html();
+  this.container = script.parent();
+  script.remove();
+};
+
+Template.prototype.render = function(data){
+  var html = Mustache.to_html(this.template, data);
+  if (this.container.html() !== html) {
+    this.container.html(html);
+  }
+};
+
+var util = {};
+
+util.sortBy = function(property){
+  return function(a, b){
+    var ka = a[property];
+    var kb = b[property];
+    if (ka < kb) { return -1; }
+    if (ka > kb) { return  1; }
+    return 0;
+  };
+};
+
+var main = function(){
+  var pollInterval = 3000; // ms
+
+  var template = new Template('projects_template');
+
+  var setStatus = function(text){
     $('#status span').text(text);
-  },
+  };
 
-  setUpdated: function(){
+  var setUpdated = function(){
     $('#updated span').text('' + new Date());
-  },
+  };
 
-  entry: {
-    loadTemplate: function(){
-      UI.entry.container = $('#cc');
-      UI.entry.template  = UI.entry.container.html();
-    },
-
-    toHtml: function(entry){
-      entry.name = entry.name.replace(/_/g, ' ');
-      return Mustache.to_html(UI.entry.template, entry);
-    },
-
-    sort: function(a, b){
-      var ka = a.lastBuildTime;
-      var kb = b.lastBuildTime;
-      if (ka < kb) { return  1; }
-      if (ka > kb) { return -1; }
-      return 0;
-    }
-  },
-
-  receivedCc: function(data, textStatus){
-    UI.setStatus(textStatus);
+  var receivedCc = function(data, textStatus){
+    setStatus(textStatus);
     if (textStatus != 'success') { return; }
-    UI.setUpdated();
+    setUpdated();
 
-    var sorted = data.sort(UI.entry.sort);
-    var html = '';
-    $.each(sorted, function(i, entry){
-      html += UI.entry.toHtml(entry);
-    });
+    template.render({projects: data.sort(util.sortBy('lastBuildTime')).reverse()});
+    setTimeout(shrinkToFit, 1);
+  };
 
-    if (UI.entry.container.html() != html) {
-      UI.entry.container.html(html);
-      setTimeout(UI.shrinkToFit, 1);
-    }
-  },
-
-  shrinkToFit: function(){
+  var shrinkToFit = function(){
     var fontSize = parseInt($('html').css('font-size'), 10);
     var elem = $('#cc li:last-child');
     if (fontSize < 20 || elem.length < 1) { return; }
@@ -56,20 +58,18 @@ var UI = {
     if (delta < 0) {
       var a = (delta < -200) ? 10 : 1;
       $('html').css('font-size', (fontSize - a) + 'px');
-      setTimeout(UI.shrinkToFit, 1);
+      setTimeout(shrinkToFit, 1);
     }
-  },
+  };
 
-  pollCc: function(){
-    setTimeout(UI.pollCc, UI.pollInterval);
-    UI.setStatus('polling …');
-    $.get('/cc.json', UI.receivedCc);
-  },
+  var pollCc = function(){
+    setTimeout(pollCc, pollInterval);
+    setStatus('polling …');
+    $.get('/cc.json', receivedCc);
+  };
 
-  start: function(){
-    UI.entry.loadTemplate();
-    UI.pollCc();
-  }
+  pollCc();
 };
 
-$(document).ready(UI.start);
+$(document).ready(main);
+})();
