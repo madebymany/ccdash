@@ -47,7 +47,7 @@ var poll = function(){
     res.on('end', function(){
       parser.close();
       setTimeout(poll, pollInterval);
-      projects = data.map(function(e){ e.name = e.name.replace(/_/g, ' '); return e });
+      projects = data.map(function(e){ e.name = e.name.replace(/_/g, ' '); return e; });
     });
   });
 
