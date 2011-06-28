@@ -55,7 +55,7 @@ $(document).ready(function(){
     var maxHeight = $('html').outerHeight();
     var delta = elem.offset().top + elem.outerHeight() - maxHeight;
     if (delta > 0) {
-      var a = Math.ceil(Math.log(delta));
+      var a = Math.max(Math.ceil(Math.log(delta)), 1);
       $('html').css('font-size', (fontSize - a) + 'px');
       setTimeout(shrinkToFit, 1);
     }
