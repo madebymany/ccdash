@@ -1,32 +1,31 @@
-(function(){
+$(document).ready(function(){
 
-var Template = function(name){
-  var script = $('#' + name);
-  this.template = script.html();
-  this.container = script.parent();
-  script.remove();
-};
-
-Template.prototype.render = function(data){
-  var html = Mustache.to_html(this.template, data);
-  if (this.container.html() !== html) {
-    this.container.html(html);
-  }
-};
-
-var util = {};
-
-util.sortBy = function(property){
-  return function(a, b){
-    var ka = a[property];
-    var kb = b[property];
-    if (ka < kb) { return -1; }
-    if (ka > kb) { return  1; }
-    return 0;
+  var Template = function(name){
+    var script = $('#' + name);
+    this.template = script.html();
+    this.container = script.parent();
+    script.remove();
   };
-};
 
-var main = function(){
+  Template.prototype.render = function(data){
+    var html = Mustache.to_html(this.template, data);
+    if (this.container.html() !== html) {
+      this.container.html(html);
+    }
+  };
+
+  var util = {};
+
+  util.sortBy = function(property){
+    return function(a, b){
+      var ka = a[property];
+      var kb = b[property];
+      if (ka < kb) { return -1; }
+      if (ka > kb) { return  1; }
+      return 0;
+    };
+  };
+
   var pollInterval = 3000; // ms
 
   var template = new Template('projects_template');
@@ -69,7 +68,5 @@ var main = function(){
   };
 
   pollCc();
-};
 
-$(document).ready(main);
-})();
+});
