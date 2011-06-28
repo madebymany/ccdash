@@ -47,17 +47,27 @@ $(document).ready(function(){
     setTimeout(shrinkToFit, 1);
   };
 
+  var setVisibility = function(v){
+    $('#cc').css('opacity', v);
+  };
+
   var shrinkToFit = function(){
     var fontSize = parseInt($('html').css('font-size'), 10);
     var elem = $('#cc li:last-child');
-    if (fontSize < 20 || elem.length < 1) { return; }
+    if (fontSize < 20 || elem.length < 1) {
+      setVisibility(1);
+      return;
+    }
 
+    setVisibility(0);
     var maxHeight = $('html').outerHeight();
     var delta = elem.offset().top + elem.outerHeight() - maxHeight;
     if (delta > 0) {
       var a = Math.max(Math.ceil(Math.log(delta)), 1);
       $('html').css('font-size', (fontSize - a) + 'px');
       setTimeout(shrinkToFit, 1);
+    } else {
+      setVisibility(1);
     }
   };
 
