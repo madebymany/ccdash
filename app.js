@@ -24,7 +24,7 @@ server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 server.listen(port);
 
 var poll = function(){
-  var httpClient = http.createClient(ccUrl.port, ccUrl.hostname),
+  var httpClient = http.createClient(ccUrl.port || 80, ccUrl.hostname),
       req        = httpClient.request('GET', ccUrl.pathname),
       parser     = sax.parser(/* strict = */ true),
       data       = [];
