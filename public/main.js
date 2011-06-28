@@ -53,9 +53,9 @@ $(document).ready(function(){
     if (fontSize < 20 || elem.length < 1) { return; }
 
     var maxHeight = $('html').outerHeight();
-    var delta = maxHeight - (elem.offset().top + elem.outerHeight());
-    if (delta < 0) {
-      var a = (delta < -200) ? 10 : 1;
+    var delta = elem.offset().top + elem.outerHeight() - maxHeight;
+    if (delta > 0) {
+      var a = Math.ceil(Math.log(delta));
       $('html').css('font-size', (fontSize - a) + 'px');
       setTimeout(shrinkToFit, 1);
     }
