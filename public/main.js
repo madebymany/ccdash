@@ -59,10 +59,10 @@ $(document).ready(function(){
       return;
     }
 
-    setVisibility(0);
     var maxHeight = $('html').outerHeight();
     var overflow = lastItem.offset().top + lastItem.outerHeight() - maxHeight;
     if (overflow > 0) {
+      setVisibility(0);
       var a = Math.max(Math.ceil(Math.log(overflow)), 1);
       $('html').css('font-size', (fontSize - a) + 'px');
       setTimeout(shrinkToFit, 1);
