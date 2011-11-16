@@ -9,18 +9,23 @@ Usage
 
     node app.js http://your-build-machine.local:8080/cc.xml
 
-Visit the server on port 4444. That's it.
+Visit the server on port 4444. That's it. You can add authentication parameters
+in the normal way, viz.:
+
+    node app.js http://user:pass@your-build-machine.local:8080/cc.xml
 
 Prerequisites
 -------------
 
-* [node.js](http://nodejs.org/)
-* [express](http://expressjs.com/)
-* [sax](http://github.com/isaacs/sax-js)
+* [node.js](https://nodejs.org/)
+* [express](https://expressjs.com/)
+* [sax](https://github.com/isaacs/sax-js)
+* [restler](https://github.com/danwrong/restler)
 
-You might find [npm](http://npmjs.org/) helpful:
+You might find [npm](http://npmjs.org/) helpful. If you have npm installed
+already, you can install the other dependencies via make:
 
-    npm install express sax
+    make deps
 
 Browsers
 --------
