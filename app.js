@@ -6,9 +6,10 @@ var http    = require('http'),
     sys     = require('sys'),
     url     = require('url'),
     sax     = require('sax'),
-    express = require('express');
+    express = require('express'),
+    restler = require('restler');
 
-var ccUrl = url.parse(process.argv[2] || 'http://localhost:4444/sample.xml'),
+var ccUrl = process.argv[2] || 'http://localhost:4444/sample.xml',
     port  = parseInt(process.argv[3] || 4444, 10),
     pollInterval = 3000,
     projects = [],
@@ -24,34 +25,20 @@ server.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 server.listen(port);
 
 var poll = function(){
-  var httpClient = http.createClient(ccUrl.port || 80, ccUrl.hostname),
-      req        = httpClient.request('GET', ccUrl.pathname),
-      parser     = sax.parser(/* strict = */ true),
-      data       = [];
+  var parser = sax.parser(/* strict = */ true),
+      nodes = [];
 
   parser.onopentag = function(node){
     if (node.name == 'Project') {
-      data.push(node.attributes);
+      nodes.push(node.attributes);
     }
   };
 
-  httpClient.addListener('error', function(ex){
-    setTimeout(poll, pollInterval);
+  restler.get(ccUrl).on('complete', function(data) {
+    parser.write(data + '');
+    parser.close();
+    projects = nodes.map(function(e){ e.name = e.name.replace(/_/g, ' '); return e; });
   });
-
-  req.on('response', function(res){
-    res.on('data', function(chunk){
-      parser.write(chunk + '');
-    });
-
-    res.on('end', function(){
-      parser.close();
-      setTimeout(poll, pollInterval);
-      projects = data.map(function(e){ e.name = e.name.replace(/_/g, ' '); return e; });
-    });
-  });
-
-  req.end();
 };
 
 poll();
