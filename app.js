@@ -41,4 +41,4 @@ var poll = function(){
   });
 };
 
-poll();
+setInterval(poll, pollInterval);
