@@ -12,12 +12,16 @@ var http    = require('http'),
 var ccUrl = process.argv[2] || 'http://localhost:4444/sample.xml',
     port  = parseInt(process.argv[3] || 4444, 10),
     pollInterval = 3000,
-    projects = [],
+    state = {
+      status: 'pending',
+      projects: [],
+      lastUpdate: null
+    },
     server = express.createServer();
 
 server.get('/cc.json', function(req, res){
   res.header('Content-Type', 'application/json');
-  res.send(JSON.stringify(projects));
+  res.send(JSON.stringify(state));
 });
 
 server.use(express['static'](__dirname + '/public'));
@@ -39,11 +43,16 @@ var poll = function(){
   request.on('success', function(data) {
     parser.write(data + '');
     parser.close();
-    projects = nodes.map(function(e){ e.name = e.name.replace(/_/g, ' '); return e; });
+    state.projects = nodes.map(function(e){
+      e.name = e.name.replace(/_/g, ' '); return e;
+    });
+    state.status = 'success';
+    state.lastUpdate = new Date();
     setTimeout(poll, pollInterval);
   });
 
   request.on('error', function(){
+    state.status = 'error';
     setTimeout(poll, pollInterval);
   });
 };

@@ -34,8 +34,8 @@ $(document).ready(function(){
     $('#status span').text(text);
   };
 
-  var setUpdated = function(){
-    $('#updated span').text('' + new Date());
+  var setUpdated = function(when){
+    $('#updated span').text('' + (when || 'Never'));
   };
 
   var setVisibility = function(v){
@@ -43,11 +43,12 @@ $(document).ready(function(){
   };
 
   var receivedCc = function(data, textStatus){
-    setStatus(textStatus);
+    setStatus('client = ' + textStatus);
     if (textStatus != 'success') { return; }
-    setUpdated();
+    setUpdated(data.lastUpdate);
+    setStatus('client = ' + textStatus + '; server = ' + data.status);
 
-    template.render({projects: data.sort(util.sortBy('lastBuildTime')).reverse()});
+    template.render({projects: data.projects.sort(util.sortBy('lastBuildTime')).reverse()});
     setTimeout(shrinkToFit, 1);
   };
 
