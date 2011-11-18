@@ -34,12 +34,18 @@ var poll = function(){
     }
   };
 
-  restler.get(ccUrl).on('complete', function(data) {
+  var request = restler.get(ccUrl);
+
+  request.on('success', function(data) {
     parser.write(data + '');
     parser.close();
     projects = nodes.map(function(e){ e.name = e.name.replace(/_/g, ' '); return e; });
+    setTimeout(poll, pollInterval);
+  });
+
+  request.on('error', function(){
+    setTimeout(poll, pollInterval);
   });
 };
 
 poll();
-setInterval(poll, pollInterval);
