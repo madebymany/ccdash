@@ -30,6 +30,14 @@ $(document).ready(function(){
 
   var template = new Template('projects_template');
 
+  var setHealth = function(ok){
+    if (ok) {
+      $('html').removeClass('unhealthy').addClass('healthy');
+    } else {
+      $('html').removeClass('healthy').addClass('unhealthy');
+    }
+  }
+
   var setStatus = function(text){
     $('#status span').text(text);
   };
@@ -43,9 +51,14 @@ $(document).ready(function(){
   };
 
   var receivedCc = function(data, textStatus){
-    setStatus('client = ' + textStatus);
-    if (textStatus != 'success') { return; }
+    if (textStatus != 'success') {
+      setStatus('client = ' + textStatus);
+      setHealth(false);
+      return;
+    }
+
     setUpdated(data.lastUpdate);
+    setHealth(data.status == 'success');
     setStatus('client = ' + textStatus + '; server = ' + data.status);
 
     template.render({projects: data.projects.sort(util.sortBy('lastBuildTime')).reverse()});
@@ -75,7 +88,11 @@ $(document).ready(function(){
   var pollCc = function(){
     setTimeout(pollCc, pollInterval);
     setStatus('polling …');
-    $.get('/cc.json', receivedCc);
+    $.ajax({
+      url: '/cc.json',
+      success: receivedCc,
+      error: function(){ setHealth(false); }
+    });
   };
 
   pollCc();
