@@ -55,5 +55,6 @@ li {
   -webkit-animation: orange-throb 2s infinite;
 }
 .Unknown {
-  background-color: #d70;
+  background-color: #444;
+  color: #888;
 }
