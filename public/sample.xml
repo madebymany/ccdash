@@ -27,5 +27,12 @@
     lastBuildTime="2010-11-01T04:00:00Z"
     lastBuildStatus="Failure"
     activity="Building"/>
+  <Project
+    webUrl="http://example.com/"
+    name="Unknown_Status"
+    lastBuildLabel="1"
+    lastBuildTime="2010-11-01T05:00:00Z"
+    lastBuildStatus="Unknown"
+    activity="Sleeping"/>
 </Projects>
 
