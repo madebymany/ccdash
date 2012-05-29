@@ -6,6 +6,9 @@ html {
   font-size: 140px;
   overflow: hidden;
 }
+.unhealthy {
+  background-color: #900;
+}
 footer p {
   bottom: 0;
   position: absolute;
@@ -50,4 +53,8 @@ li {
 }
 .Building.Failure {
   -webkit-animation: orange-throb 2s infinite;
+}
+.Unknown {
+  background-color: #444;
+  color: #888;
 }

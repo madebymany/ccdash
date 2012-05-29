@@ -30,12 +30,20 @@ $(document).ready(function(){
 
   var template = new Template('projects_template');
 
+  var setHealth = function(ok){
+    if (ok) {
+      $('html').removeClass('unhealthy').addClass('healthy');
+    } else {
+      $('html').removeClass('healthy').addClass('unhealthy');
+    }
+  }
+
   var setStatus = function(text){
     $('#status span').text(text);
   };
 
-  var setUpdated = function(){
-    $('#updated span').text('' + new Date());
+  var setUpdated = function(when){
+    $('#updated span').text('' + (when || 'Never'));
   };
 
   var setVisibility = function(v){
@@ -43,11 +51,17 @@ $(document).ready(function(){
   };
 
   var receivedCc = function(data, textStatus){
-    setStatus(textStatus);
-    if (textStatus != 'success') { return; }
-    setUpdated();
+    if (textStatus != 'success') {
+      setStatus('client = ' + textStatus);
+      setHealth(false);
+      return;
+    }
 
-    template.render({projects: data.sort(util.sortBy('lastBuildTime')).reverse()});
+    setUpdated(data.lastUpdate);
+    setHealth(data.status == 'success');
+    setStatus('client = ' + textStatus + '; server = ' + data.status);
+
+    template.render({projects: data.projects.sort(util.sortBy('lastBuildTime')).reverse()});
     setTimeout(shrinkToFit, 1);
   };
 
@@ -74,7 +88,11 @@ $(document).ready(function(){
   var pollCc = function(){
     setTimeout(pollCc, pollInterval);
     setStatus('polling …');
-    $.get('/cc.json', receivedCc);
+    $.ajax({
+      url: '/cc.json',
+      success: receivedCc,
+      error: function(){ setHealth(false); }
+    });
   };
 
   pollCc();
